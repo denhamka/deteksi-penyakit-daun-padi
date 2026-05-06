@@ -2,19 +2,26 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+import gdown
+import os
 
 # =========================
 # LOAD MODEL (DARI GDRIVE)
 # =========================
+MODEL_PATH = "rice_leaf_disease_cnn_model.keras"
+FILE_ID = "1OVBofQX8flV7DK_69MMZya6MAirLkwpv"
+
 @st.cache_resource
 def load_model():
-    model = tf.keras.models.load_model(
-        "/content/drive/MyDrive/dataset/Detection-of-Rice-Leaf-Disease-in-Indonesia/rice_leaf_disease_cnn_model.keras"
-    )
+
+    # Download model jika belum ada
+    if not os.path.exists(MODEL_PATH):
+        url = f"https://drive.google.com/uc?id={1OVBofQX8flV7DK_69MMZya6MAirLkwpv}"
+        gdown.download(url, MODEL_PATH, quiet=False)
+
+    model = tf.keras.models.load_model(MODEL_PATH)
+
     return model
-
-model = load_model()
-
 labels = ["Healthy", "Blas", "Hawar Daun", "Tungro"]
 
 # =========================
